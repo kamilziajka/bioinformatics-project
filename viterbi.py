@@ -55,7 +55,7 @@ emissions = map(lambda x: int(x), filter(lambda s: len(s) > 0, lines[4].split(' 
 initial_dist = np.array([[0.5, 0.5]])#np.array([transition_probs[0]])
 
 hmm = HMM(transition_probs, emission_probs)
-'''
+
 if __name__ == "__main__":
     result = viterbi(hmm, initial_dist, emissions)
     #result = viterbi(wiki_hmm, wiki_initial_dist, wiki_emissions)
@@ -64,10 +64,10 @@ if __name__ == "__main__":
 
 ###################
 
+'''
+
 #examples
 #from Wikipedia
-
-'''
 
 wiki_transition_probs = np.array([[0.9, 0.1], [0.1, 0.9]]) #0=dice1, 1=dice2
 wiki_emissions = [5, 4, 2, 1, 1, 1, 6, 5, 4, 2, 1, 1, 2, 4, 3, 1, 1, 1, 2, 1, 1, 1, 1, 3, 6, 6, 4, 6, 5, 5, 1, 3, 3, 6, 6, 5, 2, 1, 4, 4, 6, 3, 6, 1, 1, 1, 1, 1, 5, 1, 1, 1, 2, 1, 1, 1, 6, 1, 1, 1, 1, 3, 1, 4, 4, 6, 6, 6, 1, 1, 2, 1, 1, 3, 3, 4, 1, 1, 1, 4, 3, 2, 2, 1, 1, 1, 1, 4, 5, 5, 1, 1, 1, 3, 1, 1, 6, 4, 2, 1, 5, 4, 6, 6, 6, 6, 4, 1, 4, 6, 6, 6, 2, 6, 3, 6, 6, 4, 5, 6, 6, 3, 3, 6, 3, 6, 5, 1, 3, 1, 1, 4, 4, 1, 3, 6, 2, 6, 6, 5, 4, 6, 6, 2, 3, 1, 1, 2, 1, 3, 4, 1, 2, 1, 5, 6, 6, 4, 6, 1, 2, 6, 6, 1, 6, 1, 2, 5, 1, 6, 6, 5, 6, 6, 6, 1, 6, 6, 6, 6, 4, 6, 4, 1, 2, 3, 6, 2, 6, 4, 6, 5, 6, 6, 6, 6, 6, 3, 1, 1]
@@ -95,3 +95,4 @@ print initial_dist
 print wiki_initial_dist
 print '---'
 
+'''
