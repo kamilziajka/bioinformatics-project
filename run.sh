@@ -15,3 +15,5 @@ echo "$d1 $d2 $t1 $t2 $tosses" | ./Bio 1> >(tee | tail -n+5 >> data) 2> >(tee > 
 
 python viterbi.py
 cat dice
+echo
+python fwbw.py
