@@ -1,8 +1,6 @@
 .idea
 temp
 Bio
-data
-dice
 *.pyc
 plot.png
 *.txt

@@ -3,7 +3,7 @@ from hmm import HMM
 
 def parse_data():
     # data input file
-    lines = open('data', 'r').readlines()
+    lines = open('data.txt', 'r').readlines()
 
     # emissions
     emissions = map(lambda x: int(x), filter(lambda s: len(s) > 0, lines[4].split(' ')))

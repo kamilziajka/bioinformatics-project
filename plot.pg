@@ -12,7 +12,7 @@ set style data linespoints
 
 set title "Tosses"
 
-plot 'dice' with lines, 'viterbi.txt' with lines, 'fwbw.txt' with lines
+plot 'dice.txt' with lines, 'viterbi.txt' with lines, 'fwbw.txt' with lines
 unset multiplot
 #
 
