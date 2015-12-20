@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-echo "5 1 1 1 1 1 1 1 1 1 1 5 10 1 1 10 100" | ./Bio
+echo "1 1 1 1 1 5 5 1 1 1 1 1 9 1 1 9 200" | ./Bio 2>dice.txt

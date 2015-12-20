@@ -31,13 +31,13 @@ int main() {
 
     cout << "Enter number of tosses:" << endl;
     cin >> tosses;
-
-    cout << "d" << croupier.CurrentDice() << " ";
+    
     for (int i = 0; i < tosses; i++) {
+        cerr << croupier.CurrentDice() - 1 << " ";
         cout << croupier.Next() << " ";
-        if (croupier.HasJustChangedDice()) {
+        /*if (croupier.HasJustChangedDice()) {
             cout << "d" << croupier.CurrentDice() << " ";
-        }
+        }*/
     }
 
     return 0;
