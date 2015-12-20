@@ -1,7 +1,7 @@
-from hmm import HMM
 import numpy as np
+from parse import parse_data
 
-#forward-backward algorithm
+# forward-backward algorithm
 def backward(hmm, emissions):
     dist = uniform(hmm.num_states)
     dists = [dist]
@@ -36,7 +36,6 @@ def forward(hmm, initial_dist, emissions):
 def forward_step(hmm, dist, emission):
     return normalize(np.dot(dist, np.dot(hmm.transition_probs, np.diagflat(hmm.emission_dist(emission)))))
 
-#related utilities
 def modify_tuple(tuple_, ix, value):
     as_list = list(tuple_)
     as_list[ix] = value
@@ -50,37 +49,12 @@ def normalize(array, axis=1):
 def uniform(n):
     return normalize(np.ones((1,n)))
 
-# file
-lines = open('data', 'r').readlines()
+# running forward-backward
+def main():
+    hmm, initial_dist, emissions = parse_data()
 
-# emissions
-emission_probs_d1 = np.array(map(lambda x: float(x), lines[0].split(' ')))
-temp = reduce(lambda x, y: x + y, emission_probs_d1)
-emission_probs_d1 = map(lambda x: x / temp, emission_probs_d1)
+    res = forward_backward(hmm, initial_dist, emissions)
+    for n in res:
+        print(str(n[1]))
 
-emission_probs_d2 = np.array(map(lambda x: float(x), lines[1].split(' ')))
-temp = reduce(lambda x, y: x + y, emission_probs_d2)
-emission_probs_d2 = map(lambda x: x / temp, emission_probs_d2)
-
-emission_probs = np.array([[0.0] + emission_probs_d1, [0.0] + emission_probs_d2])
-
-# transitions probs
-transition_probs_1 = np.array(map(lambda x: float(x), lines[2].split(' ')))
-temp = reduce(lambda x, y: x + y, transition_probs_1)
-transition_probs_1 = map(lambda x: x / temp, transition_probs_1)
-
-transition_probs_2 = np.array(map(lambda x: float(x), lines[3].split(' ')))
-temp = reduce(lambda x, y: x + y, transition_probs_2)
-transition_probs_2 = map(lambda x: x / temp, transition_probs_2)
-
-transition_probs = np.array([transition_probs_1, transition_probs_2])
-
-# trans
-emissions = map(lambda x: int(x), filter(lambda s: len(s) > 0, lines[4].split(' ')))
-
-initial_dist = np.array([[0.5, 0.5]])#np.array([transition_probs[0]])
-
-hmm = HMM(transition_probs, emission_probs)
-
-if __name__ == "__main__":
-    print(forward_backward(hmm, initial_dist, emissions))
+if __name__ == "__main__": main()
