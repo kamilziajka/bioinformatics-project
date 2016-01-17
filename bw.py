@@ -28,7 +28,7 @@ class HMM:
             alpha[:,t] /= scale[t]
 
         logprob = np.sum(np.log(scale[:]))
-        return logprob, alpha, scale	
+        return logprob, alpha, scale
 
     def backward_with_scale(self, obs, scale):
         T = len(obs)
@@ -40,36 +40,33 @@ class HMM:
             for n in xrange(0,N):
                 beta[n,t] = np.sum(self.B[:,obs[t+1]-1] * self.A[n,:] * beta[:,t+1])
                 beta[n,t] /= scale[t]
-		
+
         return beta
 
     def baum_welch(self, obs):
         T = len(obs)
         M = self.M
-        N = self.N		
+        N = self.N
         alpha = np.zeros([N,T])
         beta = np.zeros([N,T])
         scale = np.zeros(T)
         gamma = np.zeros([N,T])
         xi = np.zeros([N,N,T-1])
-    
-        # caculate initial parameters
+
         logprobprev, alpha, scale = self.forward_with_scale(obs)
-        beta = self.backward_with_scale(obs, scale)			
-        gamma = self.compute_gamma(alpha, beta)	
-        xi = self.compute_xi(obs, alpha, beta)	
-        logprobinit = logprobprev		
-		
-        # start interative 
+        beta = self.backward_with_scale(obs, scale)
+        gamma = self.compute_gamma(alpha, beta)
+        xi = self.compute_xi(obs, alpha, beta)
+        logprobinit = logprobprev
+
         while True:
-            # E
             self.pi = 0.001 + 0.999*gamma[:,0]
             for i in xrange(N):
                 denominator = np.sum(gamma[i,0:T-1])
-                for j in xrange(N): 
+                for j in xrange(N):
                     numerator = np.sum(xi[i,j,0:T-1])
                     self.A[i,j] = numerator / denominator
-                   				
+
             self.A = 0.001 + 0.999*self.A
             for j in xrange(0,N):
                 denominator = np.sum(gamma[j,:])
@@ -83,13 +80,12 @@ class HMM:
 
             # M
             logprobcur, alpha, scale = self.forward_with_scale(obs)
-            beta = self.backward_with_scale(obs, scale)			
-            gamma = self.compute_gamma(alpha, beta)	
-            xi = self.compute_xi(obs, alpha, beta)	
+            beta = self.backward_with_scale(obs, scale)
+            gamma = self.compute_gamma(alpha, beta)
+            xi = self.compute_xi(obs, alpha, beta)
 
             delta = logprobcur - logprobprev
             logprobprev = logprobcur
-
             if delta <= DELTA:
                 break 	
 				
@@ -128,37 +124,20 @@ def main():
         np.delete(B[1], 0)
     ])
 
+    print "------------------------------"
+    print "real parameters"
     print "pi:", pi
     print "A:", A
     print "B:", B
-    print "Emissions:", emissions
-
-    # test
-
-    # A = np.array([
-    #     [0.333, 0.333, 0.333],
-    #     [0.333, 0.333, 0.333],
-    #     [0.333, 0.333, 0.333],
-    # ])
-    #
-    # B = np.array([
-    #     [0.5, 0.5],
-    #     [0.75, 0.25],
-    #     [0.25, 0.75]
-    # ])
-    #
-    # pi = np.array([0.333, 0.333, 0.333])
-    #
-    # emissions = np.array([1, 1, 1, 2, 2, 2, 1, 2, 1, 2])
-    #
-    # print "pi:", pi
-    # print "A:", A
-    # print "B:", B
-    # print "Emissions:", emissions
 
     hmm = HMM(pi, A, B)
     logprobinit, logprobfinal = hmm.baum_welch(emissions)
 
+    print "------------------------------"
+    print "estimated parameters"
+    print "pi:", hmm.pi
+    print "A:", hmm.A
+    print "B:", hmm.B
     print "initial log probability:", logprobinit
     print "final log probability:", logprobfinal
 
